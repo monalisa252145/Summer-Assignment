@@ -1,0 +1,41 @@
+package Day2;
+
+import java.util.*;
+
+class aanagram {
+    public List<Integer> findAnagrams(String s, String p) {
+        List<Integer> result = new ArrayList<>();
+
+        int n = s.length();
+        int m = p.length();
+
+        if (m > n) {
+            return result;
+        }
+
+        int[] pCount = new int[26];
+        int[] windowCount = new int[26];
+
+        // First window
+        for (int i = 0; i < m; i++) {
+            pCount[p.charAt(i) - 'a']++;
+            windowCount[s.charAt(i) - 'a']++;
+        }
+
+        if (Arrays.equals(pCount, windowCount)) {
+            result.add(0);
+        }
+
+        // Sliding window
+        for (int i = m; i < n; i++) {
+            windowCount[s.charAt(i) - 'a']++;       // add new char
+            windowCount[s.charAt(i - m) - 'a']--;   // remove old char
+
+            if (Arrays.equals(pCount, windowCount)) {
+                result.add(i - m + 1);
+            }
+        }
+
+        return result;
+    }
+}
